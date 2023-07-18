@@ -9,6 +9,9 @@ import SwiftUI
 
 struct NewToDoView: View {
     
+    @Binding var toDoItems: [ToDoItem]
+    @Binding var showNewTask : Bool
+    
     @State var title: String
     @State var isImportant: Bool
     
@@ -30,7 +33,8 @@ struct NewToDoView: View {
             .padding()
             
             Button(action: {
-              
+                self.addTask(title: self.title, isImportant: self.isImportant)
+                self.showNewTask = false
             }) {
                 Text("Add")
             }
@@ -38,10 +42,17 @@ struct NewToDoView: View {
             
         } // end of vstack
     }
+    
+    private func addTask(title: String, isImportant: Bool = false) {
+            
+            let task = ToDoItem(title: title, isImportant: isImportant)
+            toDoItems.append(task)
+        }
+    
 }
 
 struct NewToDoView_Previews: PreviewProvider {
     static var previews: some View {
-        NewToDoView(title: "", isImportant: false)
+        NewToDoView(toDoItems: .constant([]), showNewTask: .constant(true), title: "", isImportant: false)
     }
 }
